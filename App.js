@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, Linking } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Linking,
+  ImageBackground
+} from "react-native";
 import {
   Container,
   Header,
@@ -17,10 +24,14 @@ import {
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 export default class App extends Component<Props> {
-  openLink(appUrl, webUrl) {
-    Linking.canOpenURL(appUrl).then(supported => {
+  openLink(iosUrl, webUrl, andUrl) {
+    Linking.canOpenURL(iosUrl).then(supported => {
       if (supported) {
-        return Linking.openURL(appUrl).catch(() => null);
+        if (Platform.OS == "ios") {
+          return Linking.openURL(iosUrl).catch(() => null);
+        } else {
+          return Linking.openURL(andUrl).catch(() => null);
+        }
       } else {
         if (webUrl != null) {
           return Linking.openURL(webUrl).catch(() => null);
@@ -28,80 +39,100 @@ export default class App extends Component<Props> {
       }
     });
   }
-
   render() {
-    console.log(getStatusBarHeight());
     return (
       <Container style={styles.container}>
-        <Content>
-          <Text style={styles.headerText}>YMLAEN UNISON Branch</Text>
-          <Text style={styles.infoText}>
-            YMLAEN UNISON Branch is in Cardiff and covers the whole of Wales. If
-            you have a workplace issue that you need advice about please contact
-            the branch. Phone lines are open Monday to Friday 10am until 4pm.
-            Outside these times please leave us a message.
-          </Text>
+        <ImageBackground
+          source={require("./images/city.jpg")}
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
+        >
+          <Content>
+            <Text style={styles.headerText}>YMLAEN UNISON Branch</Text>
+            <Text style={styles.infoText}>
+              YMLAEN UNISON Branch is in Cardiff and covers the whole of Wales.
+              If you have a workplace issue that you need advice about please
+              contact the branch. Phone lines are open Monday to Friday 10am
+              until 4pm. Outside these times please leave us a message.
+            </Text>
 
-          <View style={styles.buttonContainer}>
-            <Button
-              iconLeft
-              light
-              block
-              style={styles.button}
-              onPress={() => this.openLink("telprompt:02920228933", null)}
-            >
-              <Icon style={styles.icon} active name="ios-call" />
-              <Text style={styles.buttonLabel}>Call Us</Text>
-            </Button>
+            <View style={styles.buttonContainer}>
+              <Button
+                iconLeft
+                light
+                block
+                style={styles.button}
+                onPress={() =>
+                  this.openLink(
+                    "telprompt:02920228933",
+                    null,
+                    "tel:02920228933"
+                  )
+                }
+              >
+                <Icon style={styles.icon} active name="ios-call" />
+                <Text style={styles.buttonLabel}>Call Us</Text>
+              </Button>
 
-            <Button
-              iconLeft
-              light
-              block
-              style={styles.button}
-              onPress={() => this.openLink("mailto:info@ymlaen.org", null)}
-            >
-              <Icon style={styles.icon} active name="md-mail" />
-              <Text style={styles.buttonLabel}>Email Us</Text>
-            </Button>
+              <Button
+                iconLeft
+                light
+                block
+                style={styles.button}
+                onPress={() =>
+                  this.openLink(
+                    "mailto:info@ymlaen.org",
+                    null,
+                    "mailto:info@ymlaen.org"
+                  )
+                }
+              >
+                <Icon style={styles.icon} active name="md-mail" />
+                <Text style={styles.buttonLabel}>Email Us</Text>
+              </Button>
 
-            <Button
-              iconLeft
-              light
-              block
-              style={styles.button}
-              onPress={() =>
-                this.openLink(
-                  "fb://page?id=1503452143275430",
-                  "http://www.facebook.com/ymlaenbranch"
-                )
-              }
-            >
-              <Icon style={styles.icon} active name="logo-facebook" />
-              <Text style={styles.buttonLabel}>Find us on Facebook</Text>
-            </Button>
+              <Button
+                iconLeft
+                light
+                block
+                style={styles.button}
+                onPress={() =>
+                  this.openLink(
+                    "fb://page?id=1503452143275430",
+                    "http://www.facebook.com/ymlaenbranch",
+                    "fb://page/1503452143275430"
+                  )
+                }
+              >
+                <Icon style={styles.icon} active name="logo-facebook" />
+                <Text style={styles.buttonLabel}>Find us on Facebook</Text>
+              </Button>
 
-            <Button
-              iconLeft
-              light
-              block
-              style={styles.button}
-              onPress={() =>
-                this.openLink(
-                  "twitter://user?screen_name=ymlaen_branch",
-                  "http://twitter.com/ymlaen_branch"
-                )
-              }
-            >
-              <Icon style={styles.icon} active name="logo-twitter" />
-              <Text style={styles.buttonLabel}>Find us on Twitter</Text>
-            </Button>
-          </View>
+              <Button
+                iconLeft
+                light
+                block
+                style={styles.button}
+                onPress={() =>
+                  this.openLink(
+                    "twitter://user?screen_name=ymlaen_branch",
+                    "http://twitter.com/ymlaen_branch",
+                    "twitter://user?screen_name=ymlaen_branch"
+                  )
+                }
+              >
+                <Icon style={styles.icon} active name="logo-twitter" />
+                <Text style={styles.buttonLabel}>Find us on Twitter</Text>
+              </Button>
+            </View>
 
-          <Text style={styles.infoText}>
-            Transport House, 1 Cathedral Road {"\n"}Cardiff CF11 9SB
-          </Text>
-        </Content>
+            <Text style={styles.infoText}>
+              Transport House, 1 Cathedral Road {"\n"}Cardiff CF11 9SB
+            </Text>
+          </Content>
+        </ImageBackground>
       </Container>
     );
   }
@@ -147,7 +178,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    opacity: 1
     // shadowColor: "#aaaaaa",
     // shadowOffset: { width: 0, height: 0 },
     // shadowRadius: 5,
@@ -166,6 +198,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    opacity: 0.9
   }
 });
