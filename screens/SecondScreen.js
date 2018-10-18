@@ -15,7 +15,7 @@ export default class About extends React.Component {
         tabBarLabel: "Latest Information",
         drawerIcon: () => {
             return (
-                <Icon name="list" size={30} />
+                <Icon name="list" size={25} />
 
 
             )
@@ -42,7 +42,7 @@ export default class About extends React.Component {
                         </View>
 
 
-                        <Text style={styles.headerText}>Latest Information</Text>
+                        <Text style={styles.headerText}>Useful Links</Text>
                     </View>
 
                     <View style={styles.infoText}>

@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation';
 
-import Home from "./screens/Home";
+import Home from "./screens/Home2";
 import SecondScreen from "./screens/SecondScreen";
-import About from "./screens/About";
+import Location from "./screens/Location";
+import Events from "./screens/Events";
+import Officers from "./screens/Officers";
 
 
 const App = createDrawerNavigator(
@@ -13,11 +15,19 @@ const App = createDrawerNavigator(
       path: '/:name',
       screen: Home
     },
-    "About Us": {
+    "Find Us": {
       path: '/',
-      screen: About
+      screen: Location
     },
-    "Latest Information": {
+    "Events": {
+      path: '/',
+      screen: Events
+    },
+    "Branch Officers": {
+      path: '/',
+      screen: Officers
+    },
+    "Useful Links": {
       path: '/',
       screen: SecondScreen
     }
