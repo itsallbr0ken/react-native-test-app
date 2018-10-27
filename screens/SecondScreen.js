@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Image, StyleSheet, Linking } from "react-native";
+import { Platform, Text, View, Button, Image, StyleSheet, Linking } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     Container,
@@ -98,7 +98,7 @@ export default class About extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
         backgroundColor: "#339933",
     },
     headerContainer: {

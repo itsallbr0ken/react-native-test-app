@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Image, StyleSheet, Linking, Dimensions } from "react-native";
+import { Platform, Text, View, Button, Image, StyleSheet, Linking, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     Container,
@@ -89,7 +89,7 @@ export default class Officers extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
         backgroundColor: "#339933",
     },
     headerContainer: {
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     },
     list: {
         backgroundColor: "#fff",
-        height: Dimensions.get('window').height - 110,
+        height: Platform.OS === 'ios' ? Dimensions.get('window').height - 110 : "auto",
     }
 })

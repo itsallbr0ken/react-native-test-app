@@ -174,7 +174,7 @@ export default class Home extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
         backgroundColor: "#339933"
     },
     header: {
