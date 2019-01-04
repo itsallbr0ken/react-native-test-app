@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Text, View, Button, Image, StyleSheet, Linking, Dimensions } from "react-native";
+import { Platform, Text, View, Button, Image, StyleSheet, Linking, Dimensions, ActivityIndicator } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     Container,
@@ -9,6 +9,9 @@ import {
 } from "native-base";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import FAIcon from 'react-native-vector-icons/FontAwesome';
+import HTMLView from 'react-native-htmlview';
+
+const regex = /(<([^>]+)>)/ig;
 
 export default class Links extends React.Component {
     static navigationOptions = {
@@ -22,10 +25,41 @@ export default class Links extends React.Component {
         }
     }
 
+    constructor(props) {
+        super(props);
+        this.state = { isLoading: true };
+    }
+
+    componentDidMount() {
+        return fetch("https://itsallbroken.team-hamster.co.uk/wp-json/wp/v2/posts?categories=4&page=1&per_page=30&orderby=title&order=asc")
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState(
+                    {
+                        isLoading: false,
+                        dataSource: responseJson
+                    },
+                    function () { }
+                );
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
     openLink(webUrl) {
         return Linking.openURL(webUrl).catch(() => null);
     }
+
+
+
+    removeTags(str) {
+        return str.replace(regex, '');
+    }
+
     render() {
+
+        console.log(this.state.dataSource);
 
         var officers = [
             { title: "Summer Newsletter - 2018", url: "http://ymlaen.org/wp/wp-content/uploads/2018/10/Summer-2018-Newsletter.pdf" },
@@ -44,6 +78,33 @@ export default class Links extends React.Component {
 
         ];
 
+        if (this.state.isLoading) {
+            return (
+
+                <Container style={styles.container}>
+                    <Content>
+                        <View style={styles.headerContainer}>
+                            <View style={styles.menuIconContainer}>
+                                <Text style={styles.menuButton} onPress={() => this.props.navigation.openDrawer()}>
+                                    <FAIcon
+                                        name="bars"
+                                        size={24}
+                                    />
+                                </Text>
+                            </View>
+
+
+                            <Text style={styles.headerText}>Useful Links</Text>
+                        </View>
+
+                        <View style={{ flex: 1, padding: 15 }}>
+                            <ActivityIndicator size="large" color="#ffffff" />
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
+
         return (
             <Container style={styles.container}>
                 <Content>
@@ -61,13 +122,16 @@ export default class Links extends React.Component {
                         <Text style={styles.headerText}>Useful Links</Text>
                     </View>
 
-                    <List style={styles.list} dataArray={officers} renderRow={(item) =>
+                    <List style={styles.list} dataArray={this.state.dataSource} renderRow={(item) =>
 
 
-                        <ListItem style={styles.officer} onPress={() => this.openLink(item.url)}>
-                            <Text style={styles.officerName}>
-                                {item.title}
-                            </Text>
+                        <ListItem style={styles.officer} onPress={() => this.openLink(this.removeTags(item.excerpt.rendered).trim())}>
+                            {console.log("Title:", item.title.rendered, "URL:", this.removeTags(item.excerpt.rendered))}
+                            <HTMLView
+                                value={item.title.rendered}
+                                stylesheet={styles.officerName}
+                            />
+
                         </ListItem>
                     }>
                     </List>

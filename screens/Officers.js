@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Image, StyleSheet, Linking, Dimensions } from "react-native";
+import { Platform, Text, View, Button, Image, StyleSheet, Linking, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     Container,
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     },
     list: {
         backgroundColor: "#fff",
-        height: Dimensions.get('window').height - 110,
+        height: Platform.OS === 'ios' ? Dimensions.get('window').height - 110 : "auto",
     }
 })

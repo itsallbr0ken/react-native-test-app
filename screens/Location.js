@@ -40,12 +40,6 @@ export default class Location extends React.Component {
                         <Text style={styles.headerText}>Find Us</Text>
                     </View>
 
-                    <View style={styles.locationMessage}>
-                        <Text style={styles.locationMessageText}>
-                            Need to visit the branch? Checkout the map below for our location.
-                        </Text>
-                    </View>
-
                     <View>
                         <MapView
                             initialRegion={{
