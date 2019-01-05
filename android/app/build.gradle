@@ -160,6 +160,8 @@ allprojects {
 }
 
 dependencies {
+    compile project(':react-native-pdf')
+    compile project(':rn-fetch-blob')
     compile project(':react-native-vector-icons')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])

@@ -11,6 +11,8 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import HTMLView from 'react-native-htmlview';
 
+import Pdf from 'react-native-pdf';
+
 const regex = /(<([^>]+)>)/ig;
 
 export default class Links extends React.Component {
@@ -19,8 +21,6 @@ export default class Links extends React.Component {
         drawerIcon: () => {
             return (
                 <Icon name="list" size={20} />
-
-
             )
         }
     }
@@ -48,7 +48,14 @@ export default class Links extends React.Component {
     }
 
     openLink(webUrl) {
-        return Linking.openURL(webUrl).catch(() => null);
+        var type = webUrl.slice(-3);
+
+        if (type == 'pdf') {
+            const { navigate } = this.props.navigation;
+            navigate('PDF', { url: webUrl });
+        } else {
+            return Linking.openURL(webUrl).catch(() => null);
+        }
     }
 
 
@@ -136,6 +143,11 @@ export default class Links extends React.Component {
                     }>
                     </List>
 
+                    <Button
+                        title="Go to Jane's profile"
+                        onPress={() => navigate('PDF', { name: 'Jane' })}
+                    />
+
                 </Content>
             </Container>
         )
@@ -202,5 +214,10 @@ const styles = StyleSheet.create({
     list: {
         backgroundColor: "#fff",
         height: Platform.OS === 'ios' ? Dimensions.get('window').height - 110 : "auto",
+    },
+    pdf: {
+        flex: 1,
+        width: "100%",
+        height: 400
     }
 })

@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation';
 
 import Home from "./screens/Home2";
 import Events from "./screens/Events";
 import Officers from "./screens/Officers";
 import Links from "./screens/UsefulLinksAjax";
-
-
+import PDF from "./screens/PDF";
 
 const App = createDrawerNavigator(
   {
@@ -26,6 +25,14 @@ const App = createDrawerNavigator(
     "Useful Links": {
       path: '/',
       screen: Links
+    },
+    "PDF": {
+      path: '/',
+      screen: PDF,
+      navigationOptions: {
+        drawerLabel: () => null,
+        drawerIcon: () => null
+      }
     }
   },
   {
